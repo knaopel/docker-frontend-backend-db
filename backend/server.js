@@ -4,14 +4,14 @@ const app = express();
 const port = 3001;
 
 const MongoClient = require('mongodb').MongoClient;
-const url = 'mongodb://127.0.0.1:27017';
-const dbName = 'game-of-thrones';
+const url = 'mongodb://mongo:27017';
+const dbName = 'star-wars-quotes';
 let db;
 
 MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
         console.log('Connected to database.');
-        const db = client.db('star-wars-quotes');
+        const db = client.db(dbName);
         const quotesCollection = db.collection('quotes');
 
         app.set('view engine', 'ejs');

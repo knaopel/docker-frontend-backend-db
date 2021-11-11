@@ -11,15 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.7.2",
-    "body-parser": "^1.19.0",
-    "ejs": "^3.1.5",
     "express": "^4.17.1",
-    "mongodb": "^3.6.2",
-    "mongoose": "^5.9.18",
-    "pg": "^7.11.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.2"
+    "mongoose": "^5.9.18"
   }
 }

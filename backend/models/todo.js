@@ -9,9 +9,6 @@ let Todo = new Schema({
     description: {
         type: String
     },
-    user_id: {
-        type: String
-    },
     is_complete: {
         type: Boolean
     },

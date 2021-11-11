@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors');
 const mongoose = require("mongoose");
 const port = 3001;
 const routes = require("./routes");
@@ -11,6 +12,7 @@ async function main() {
     useNewUrlParser: true,
   });
   const app = express();
+  app.use(cors());
   app.use(express.json());
   app.use("/api", routes);
 

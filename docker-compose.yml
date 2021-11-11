@@ -1,5 +1,13 @@
 version: "3.8"
-services: 
+services:
+  web:
+    build: ./frontend
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+    networks:
+      - network-backend
   api:
     build: ./backend
     depends_on:

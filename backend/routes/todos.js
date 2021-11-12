@@ -5,7 +5,7 @@ const Todo = require("../models/todo");
 
 // GET all todos
 router.get("/", async (req, res) => {
-  const todos = await Todo.find();
+  const todos = await Todo.find({ is_complete: false });
   res.send(todos);
 });
 

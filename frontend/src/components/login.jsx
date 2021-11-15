@@ -1,12 +1,12 @@
 import React from "react";
-const apiUri = proccess.env.API_URL;
+const apiUri = process.env.API_URL;
 
 const Login = () => {
   let loading = false;
-  const handleChaange = () => {};
-  const handleSubmit = () => {};
+  const handleChaange = () => { };
+  const handleSubmit = () => { };
   return (
-      <div>LOGIN</div>
+    <div>LOGIN</div>
   );
 };
 

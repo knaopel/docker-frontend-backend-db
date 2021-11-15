@@ -18,7 +18,6 @@ const API_URL = process.env.REACT_APP_API_URL;
 const Home = () => {
   const [todos, setTodos] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [newTodo, setNewTodo] = useState({});
   useEffect(() => {
     const getData = async () => {
       getTodos();
@@ -36,7 +35,6 @@ const Home = () => {
   };
 
   const handleClick = async (id) => {
-    console.log("clickety-click");
     try {
       await axios.patch(`${API_URL}/todos/${id}`, {
         is_complete: true,
@@ -48,9 +46,8 @@ const Home = () => {
   };
 
   const handleNewTodo = async (todo) => {
-    setNewTodo(todo);
     try {
-      await axios.post(`${API_URL}/todos`, { newTodo });
+      await axios.post(`${API_URL}/todos`, todo);
       await getTodos();
       setModalOpen(false);
     } catch (err) {
@@ -100,7 +97,7 @@ const Home = () => {
           Add new Todo
         </ModalHeader>
         <ModalBody>
-          <TodoForm todo={newTodo} saveTodo={handleNewTodo} />
+          <TodoForm saveTodo={handleNewTodo} />
         </ModalBody>
       </Modal>
     </>

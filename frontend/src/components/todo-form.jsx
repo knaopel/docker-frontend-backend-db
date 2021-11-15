@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 
-const TodoForm = ({ todo, saveTodo }) => {
-  const [title, setTitle] = useState(todo.title || "");
-  const [description, setDescription] = useState(todo.description || "");
-  const [dueDate, setDueDate] = useState(todo.due_date || "");
+const TodoForm = ({ saveTodo }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("");
 
   const onTitleChange = (e) => {
     setTitle(e.target.value);

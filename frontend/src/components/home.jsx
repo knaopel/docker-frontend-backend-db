@@ -34,10 +34,11 @@ const Home = () => {
     }
   };
 
-  const handleClick = async (id) => {
+  // Hacemos que la variable isComplete sea igual al valor contrario de la variable is_complete
+  const handleClick = async (id,isComplete) => {
     try {
       await axios.patch(`${API_URL}/todos/${id}`, {
-        is_complete: true,
+        is_complete: isComplete,
       });
       await getTodos();
     } catch (err) {
@@ -53,7 +54,16 @@ const Home = () => {
     } catch (err) {
       console.log("Error: ", err);
     }
-  };
+  }
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/todos/${id}`);
+      await getTodos();
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  }
 
   return (
     <>
@@ -61,33 +71,33 @@ const Home = () => {
         <CardBody>
           <CardTitle tag="h1">Todos</CardTitle>
           <ListGroup>
-            {todos.map((todo) => {
-              return (
-                <ListGroupItem
-                  title="Click this to complete."
-                  key={todo._id}
-                  action
-                  tag="a"
-                >
+            {todos.map((todo) => (
+                <ListGroupItem key={todo.id} action tag="a">
                   <div className="d-flex w-100 justify-content-between">
                     <div className="form-check">
                       <input
-                        className="form-check-input"
-                        type="checkbox"
-                        onChange={() => handleClick(todo._id)}
-                        value="foobar"
-                        defaultChecked={todo.is_complete}
+                          className="form-check-input"
+                          type="checkbox"
+                          onChange={(e) => handleClick(todo.id, e.target.checked)}
+                          defaultChecked={todo.is_complete}
                       />
                     </div>
-                    <h5>{todo.title}</h5>
-                    <small>Due: {todo.due_date}</small>
+                    <div className="flex-grow-1 ms-3">
+                      <h5>{todo.title}</h5>
+                      <p className="mb-1">{todo.description}</p>
+                      <small>Due: {todo.due_date}</small>
+                    </div>
+                    <div className="d-flex justify-content-center flex-column">
+                      <Button color="danger" size="md" onClick={() => handleDelete(todo.id)}
+                              disabled={!todo.is_complete}>
+                        Delete
+                      </Button>
+                    </div>
                   </div>
-                  <p className="mb-1">{todo.description}</p>
                 </ListGroupItem>
-              );
-            })}
+            ))}
           </ListGroup>
-          <Button onClick={() => setModalOpen(true)} color="primary">
+          <Button className={"mt-2"} onClick={() => setModalOpen(true)} color="primary">
             Add Todo
           </Button>
         </CardBody>

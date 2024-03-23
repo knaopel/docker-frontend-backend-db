@@ -1,5 +1,33 @@
 version: "3.8"
 services:
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+  api:
+    build: ./backend
+    container_name: app-node
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "3001:3001"
+    depends_on:
+      - "dynamodb-local"
+    links:
+      - "dynamodb-local"
+    environment:
+      AWS_ACCESS_KEY_ID: 'DUMMYIDEXAMPLE'
+      AWS_SECRET_ACCESS_KEY: 'DUMMYEXAMPLEKEY'
+      REGION: 'us-west-2'
+    command: npm start
+    networks:
+      - network-backend
   web:
     build: ./frontend
     depends_on:
@@ -8,31 +36,7 @@ services:
       - "3000:3000"
     networks:
       - network-backend
-  api:
-    build: ./backend
-    depends_on:
-      - mongo
-    ports:
-      - "3001:3001"
-    networks: 
-     - network-backend
-  
-  mongo:
-    image: mongo
-    restart: always
-    volumes: 
-      - mongodb_data:/data/db
-    environment: 
-      MONGODB_INITDB_ROOT_USERNAME: username
-      MONGODB_INITDB_ROOT_PASSWORD: password
-    # uncomment following lines to access db locally
-    # ports:
-    #   - 27017:27017
-    networks: 
-     - network-backend
+
 
 networks:
   network-backend:
-
-volumes: 
-  mongodb_data:

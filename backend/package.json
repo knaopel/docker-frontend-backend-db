@@ -2,17 +2,20 @@
   "name": "docker-frontend-backend-db",
   "version": "1.0.0",
   "description": "A tiny web app",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.502.0",
+    "@aws-sdk/lib-dynamodb": "^3.502.0",
+    "aws-sdk": "^2.726.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongoose": "^5.9.18"
+    "uuid": "^9.0.1"
   }
 }

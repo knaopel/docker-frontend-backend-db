@@ -1,6 +1,8 @@
 .DS_Store
 .idea/
 *.iml
+*.log
+docker
 node_modules
 npm-debug.log
 *.sublime-project

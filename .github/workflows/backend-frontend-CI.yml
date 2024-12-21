@@ -1,0 +1,70 @@
+name: Build and push docker images
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - 'frontend/**' 
+    branches:
+      - develop
+      - master
+  pull_request:
+    paths:
+      - 'backend/**'
+      - 'frontend/**' 
+      - develop
+      - master
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'develop' || github.ref_name == 'master'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Extracción de versiones
+      - name: Extract backend version
+        id: backend_version
+        run: echo "BACKEND_VERSION=$(jq -r .version < backend/package.json)" >> $GITHUB_ENV
+
+      - name: Extract frontend version
+        id: frontend_version
+        run: echo "FRONTEND_VERSION=$(jq -r .version < frontend/package.json)" >> $GITHUB_ENV
+
+      # Build y Push Backend
+      - name: Build Backend Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:v${{ env.BACKEND_VERSION }} backend/
+
+      - name: Push Backend Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/backend:v${{ env.BACKEND_VERSION }}
+
+      # Build y Push Frontend
+      - name: Build Frontend Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:v${{ env.FRONTEND_VERSION }} frontend/
+
+      - name: Push Frontend Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/frontend:v${{ env.FRONTEND_VERSION }}
+
+      # Pull para confirmar
+      - name: Pull Backend Docker image
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/backend:v${{ env.BACKEND_VERSION }}
+
+      - name: Pull Frontend Docker image
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:v${{ env.FRONTEND_VERSION }}
